@@ -1,17 +1,15 @@
 # ClearView (NetGör)
 
-Görüntülerde sis ve yağmur giderme uygulaması. Bitirme projesi.
-
-## Yapı
+## Structure
 
 ```
 clearview/
-├── backend/    # FastAPI — dehazing, deraining ve metrik servisleri
-├── frontend/   # TanStack Start (React + Vite) arayüzü
+├── backend/    # FastAPI — dehazing, deraining and metrics services
+├── frontend/   # TanStack Start (React + Vite) UI
 └── docker-compose.yml
 ```
 
-## Çalıştırma
+## Running
 
 ```bash
 docker compose up
@@ -20,9 +18,9 @@ docker compose up
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
 
-> Not: `docker-compose.yml` içindeki bazı model depoları (Depth-Anything-V2, DehazeFormer, MPRNet, fog-maker) makineye özel mutlak yollarla bağlanmıştır; kendi ortamınıza göre güncellemeniz gerekir.
+> Note: some model repositories in `docker-compose.yml` (Depth-Anything-V2, DehazeFormer, MPRNet, fog-maker) are mounted via machine-specific absolute paths; update them for your own environment.
 
-## Geliştirme
+## Development
 
 **Backend** (Python, [uv](https://docs.astral.sh/uv/)):
 
