@@ -1,0 +1,35 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: netgor-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /Users/orkun/Desktop/dev/Depth-Anything-V2:/opt/depth-anything-v2
+      - /Users/orkun/Desktop/dev/fog-maker/checkpoints:/opt/fog-maker/checkpoints
+      - /Users/orkun/Desktop/bitirme/code/DehazeFormer:/opt/dehazeformer:ro
+      - /Users/orkun/Desktop/bitirme/code/MPRNet:/opt/mprnet:ro
+      - /app/.venv
+    environment:
+      - NETGOR_DEPTH_ANYTHING_REPO=/opt/depth-anything-v2
+      - NETGOR_FOG_WEIGHTS_PATH=/opt/fog-maker/checkpoints/depth_anything_v2_vitl.pth
+      - NETGOR_DEHAZEFORMER_REPOSITORY=/opt/dehazeformer
+      - NETGOR_DEHAZEFORMER_WEIGHTS_PATH=/opt/dehazeformer/save_models/indoor/dehazeformer-w.pth
+      - NETGOR_MPRNET_REPOSITORY=/opt/mprnet/Deraining
+      - NETGOR_MPRNET_CHECKPOINT=/opt/mprnet/Deraining/pretrained_models/model_deraining.pth
+    command: uv run fastapi dev app/main.py --host 0.0.0.0
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: netgor-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    command: npm run dev -- --port 3000 --host 0.0.0.0

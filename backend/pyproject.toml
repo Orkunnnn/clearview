@@ -1,0 +1,37 @@
+[project]
+name = "netgor-backend"
+version = "0.1.0"
+description = "NetGör - Görüntülerde sis ve yağmur giderme API'si"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]",
+    "numpy>=2.1.0",
+    "opencv-python-headless>=4.8",
+    "pillow>=11.0.0",
+    "pyiqa>=0.1.15.post2",
+    "scikit-image>=0.26.0",
+    "scipy>=1.17.1",
+    "torch>=2.0",
+    "torchvision>=0.15",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "ty",
+    "pytest",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ty]
+python-version = "3.12"
