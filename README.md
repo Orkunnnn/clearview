@@ -12,13 +12,14 @@ clearview/
 ## Running
 
 ```bash
+cp .env.example .env  # then edit the paths for your machine
 docker compose up
 ```
 
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
 
-> Note: some model repositories in `docker-compose.yml` (Depth-Anything-V2, DehazeFormer, MPRNet, fog-maker) are mounted via machine-specific absolute paths; update them for your own environment.
+The backend mounts a few external model repositories (Depth-Anything-V2, DehazeFormer, MPRNet, fog-maker checkpoints) from the host; their locations are configured via the `.env` file — see `.env.example` for details.
 
 ## Development
 

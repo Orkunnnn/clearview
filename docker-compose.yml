@@ -7,10 +7,10 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
-      - /Users/orkun/Desktop/dev/Depth-Anything-V2:/opt/depth-anything-v2
-      - /Users/orkun/Desktop/dev/fog-maker/checkpoints:/opt/fog-maker/checkpoints
-      - /Users/orkun/Desktop/bitirme/code/DehazeFormer:/opt/dehazeformer:ro
-      - /Users/orkun/Desktop/bitirme/code/MPRNet:/opt/mprnet:ro
+      - ${DEPTH_ANYTHING_REPO:?set it in .env, see .env.example}:/opt/depth-anything-v2
+      - ${FOG_MAKER_CHECKPOINTS:?set it in .env, see .env.example}:/opt/fog-maker/checkpoints
+      - ${DEHAZEFORMER_REPO:?set it in .env, see .env.example}:/opt/dehazeformer:ro
+      - ${MPRNET_REPO:?set it in .env, see .env.example}:/opt/mprnet:ro
       - /app/.venv
     environment:
       - NETGOR_DEPTH_ANYTHING_REPO=/opt/depth-anything-v2
