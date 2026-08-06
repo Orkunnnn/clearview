@@ -1,4 +1,4 @@
-# ClearView (NetGör)
+# ClearView 
 
 ## Structure
 
@@ -22,7 +22,7 @@ docker compose up
 
 ## Development
 
-**Backend** (Python, [uv](https://docs.astral.sh/uv/)):
+**Backend**:
 
 ```bash
 cd backend
@@ -30,7 +30,7 @@ uv run fastapi dev app/main.py
 uv run pytest
 ```
 
-**Frontend** (Node):
+**Frontend**:
 
 ```bash
 cd frontend
