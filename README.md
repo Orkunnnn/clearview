@@ -1,154 +1,154 @@
-# NetGör
+# ClearView
 
-NetGör, sisli ve yağmurlu görüntüleri iyileştirmek, farklı algoritmaların çıktılarını karşılaştırmak ve kontrollü sentetik hava koşulları üretmek için geliştirilmiş web tabanlı bir görüntü işleme uygulamasıdır.
+ClearView is a web-based image-processing application for restoring images degraded by fog or rain, comparing the output of multiple algorithms, and generating controlled synthetic weather conditions.
 
-Uygulama, klasik görüntü işleme yöntemleriyle derin öğrenme modellerini aynı arayüzde toplar. Birden fazla görseli ve algoritmayı birlikte çalıştırabilir; sonuçları kaydırıcı veya büyüteç ile inceleyebilir ve görüntü kalite metrikleriyle değerlendirebilirsiniz.
+The application brings classical image-processing techniques and deep-learning models into one interface. It can process multiple images with multiple algorithms, present the results through slider or magnifier comparisons, and evaluate image quality with both full-reference and no-reference metrics.
 
-## Arayüz
+## Interface
 
-Ekran görüntülerinde gerçek bir yağmurlu PNG ve bu görselin MPRNet ile işlenmiş çıktısı kullanılmıştır.
+The screenshots below were captured as lossless 2560×1440 PNGs. They use a real 1600×1200 hazy PNG and the output produced by ClearView's own Fast Single Image Dehazing service.
 
-### Sonuç galerisi
+### Result gallery
 
-İşlenen görseller algoritma ve işlem zincirine göre gruplandırılır.
+Processed images are grouped by algorithm and processing pipeline.
 
-![ClearView sonuç galerisi](docs/images/clearview-results.png)
+![ClearView result gallery](docs/images/clearview-results.png)
 
-### Önce/sonra karşılaştırması
+### Before-and-after comparison
 
-Kaydırıcı görünümü, orijinal ve işlenmiş görüntüyü aynı kadraj üzerinde karşılaştırır. Ayrıntılı inceleme için büyüteç modu da kullanılabilir.
+The slider view compares the original and processed images within the same frame. A magnifier mode is also available for closer inspection.
 
-![ClearView önce ve sonra karşılaştırması](docs/images/clearview-comparison.png)
+![ClearView before-and-after comparison](docs/images/clearview-comparison.png)
 
-## Özellikler
+## Features
 
-- Sis giderme: Hızlı Tek Görüntü Sis Giderme ve DehazeFormer
-- Yağmur giderme: UGSM ve MPRNet
-- Aynı görsel üzerinde birden fazla algoritmayı toplu çalıştırma
-- Birden fazla görseli tek işlem kuyruğunda işleme
-- Ayarlanabilir yoğunlukta sentetik sis ve yağmur üretme
-- Sentetik hava çıktısını uygun iyileştirme algoritmasına aktarabilen işlem zinciri
-- Kaydırıcı, büyüteç ve çoklu sonuç karşılaştırma görünümleri
-- Referans gerektirmeyen Entropi, NIQE, BRISQUE, PIQE ve FADE metrikleri
-- Temiz referans görüntüyle MSE, PSNR ve SSIM hesaplama
-- İşlenmiş PNG çıktısını indirme
-- Açık, koyu ve sistem temaları
+- Dehazing with Fast Single Image Dehazing and DehazeFormer
+- Deraining with UGSM and MPRNet
+- Batch processing with multiple algorithms on the same image
+- Processing of multiple images in a single queue
+- Synthetic fog and rain generation with adjustable intensity
+- A processing pipeline that can pass synthetic weather results to a matching restoration algorithm
+- Slider, magnifier, and multi-result comparison views
+- No-reference Entropy, NIQE, BRISQUE, PIQE, and FADE metrics
+- Full-reference MSE, PSNR, and SSIM metrics using a clean reference image
+- Processed PNG downloads
+- Light, dark, and system themes
 
-## Desteklenen yöntemler
+## Supported methods
 
-| Görev           | Yöntem                                       | Tür           |
-| --------------- | -------------------------------------------- | ------------- |
-| Sis giderme     | Hızlı Tek Görüntü Sis Giderme                | Klasik        |
-| Sis giderme     | DehazeFormer                                 | Derin öğrenme |
-| Yağmur giderme  | UGSM                                         | Klasik        |
-| Yağmur giderme  | MPRNet                                       | Derin öğrenme |
-| Sentetik sis    | Depth Anything V2 tabanlı derinlik kestirimi | Derin öğrenme |
-| Sentetik yağmur | Prosedürel yağmur sentezi                    | Klasik        |
+| Task           | Method                                   | Type          |
+| -------------- | ---------------------------------------- | ------------- |
+| Dehazing       | Fast Single Image Dehazing               | Classical     |
+| Dehazing       | DehazeFormer                             | Deep learning |
+| Deraining      | UGSM                                     | Classical     |
+| Deraining      | MPRNet                                   | Deep learning |
+| Synthetic fog  | Depth Anything V2-based depth estimation | Deep learning |
+| Synthetic rain | Procedural rain synthesis                | Classical     |
 
-## Nasıl çalışır?
+## How it works
 
 ```mermaid
 flowchart LR
-    U[Kullanıcı] --> F[React arayüzü]
-    F --> P[İyileştirme API'si]
-    F --> W[Sentetik hava API'si]
-    F --> M[Kalite metrikleri API'si]
-    P --> D1[Sis giderme servisleri]
-    P --> D2[Yağmur giderme servisleri]
-    W --> S1[Sis sentezi]
-    W --> S2[Yağmur sentezi]
-    D1 --> R[PNG sonuç]
+    U[User] --> F[React interface]
+    F --> P[Restoration API]
+    F --> W[Synthetic weather API]
+    F --> M[Image-quality API]
+    P --> D1[Dehazing services]
+    P --> D2[Deraining services]
+    W --> S1[Fog synthesis]
+    W --> S2[Rain synthesis]
+    D1 --> R[PNG result]
     D2 --> R
     S1 --> R
     S2 --> R
     R --> F
 ```
 
-Tipik kullanım akışı:
+A typical restoration workflow:
 
-1. JPG, PNG, WebP veya BMP biçiminde, en fazla 20 MB boyutunda bir ya da daha fazla görsel yükleyin.
-2. **İyileştirme** modunda görev türünü ve çalıştırılacak algoritmaları seçin.
-3. **İşle** düğmesine basın; sonuçlar ana alanda işlem grupları halinde gösterilir.
-4. Bir sonucu açarak kaydırıcı veya büyüteç görünümünde inceleyin.
-5. İsterseniz kalite metriklerini hesaplayın, temiz referans yükleyin veya sonucu indirin.
+1. Upload one or more JPG, PNG, WebP, or BMP images of up to 20 MB each.
+2. In **Restoration** mode, select a task category and one or more algorithms.
+3. Select **Process**. Results appear in groups in the main viewport.
+4. Open a result and inspect it with the slider or magnifier view.
+5. Optionally calculate image-quality metrics, upload a clean reference image, or download the result.
 
-Sentetik veri üretmek için **Sentetik Hava** moduna geçin, sis ya da yağmuru seçin, yoğunluğu ayarlayın ve uygulanacak görselleri işaretleyin. Üretilen sentetik sonuç daha sonra uygun sis/yağmur giderme algoritmalarıyla yeniden işlenebilir.
+To generate synthetic data, switch to **Synthetic Weather** mode, select fog or rain, adjust the intensity, and choose the images to process. A synthetic result can then be passed to a compatible dehazing or deraining algorithm.
 
-## Teknoloji yığını
+## Technology stack
 
-| Katman                | Teknolojiler                                                        |
-| --------------------- | ------------------------------------------------------------------- |
-| Frontend              | React 19, TypeScript, TanStack Start/Router, Vite 7, Tailwind CSS 4 |
-| Backend               | Python 3.12, FastAPI, OpenCV, NumPy, SciPy, scikit-image            |
-| Modeller ve metrikler | PyTorch, Torchvision, pyiqa, FADE                                   |
-| Çalıştırma            | Docker Compose, uv, npm                                             |
+| Layer              | Technologies                                                        |
+| ------------------ | ------------------------------------------------------------------- |
+| Frontend           | React 19, TypeScript, TanStack Start/Router, Vite 7, Tailwind CSS 4 |
+| Backend            | Python 3.12, FastAPI, OpenCV, NumPy, SciPy, scikit-image            |
+| Models and metrics | PyTorch, Torchvision, pyiqa, FADE                                   |
+| Tooling            | Docker Compose, uv, npm                                             |
 
-## Proje yapısı
+## Project structure
 
 ```text
 clearview/
 ├── backend/
 │   ├── app/
-│   │   ├── routers/       # Sağlık, işleme, sentetik hava ve metrik uçları
-│   │   └── services/      # Algoritma ve metrik uygulamaları
-│   ├── models/            # Depoda tutulan yardımcı model/veri dosyaları
-│   └── tests/             # Pytest API ve servis testleri
+│   │   ├── routers/       # Health, processing, weather, and metrics endpoints
+│   │   └── services/      # Algorithm and metric implementations
+│   ├── models/            # Bundled model and supporting data files
+│   └── tests/             # Pytest API and service tests
 ├── frontend/
 │   ├── public/
 │   └── src/
-│       ├── components/    # Yükleme, seçim ve karşılaştırma bileşenleri
-│       ├── hooks/         # Uygulama durumu
-│       ├── lib/           # API istemcisi ve indirme yardımcıları
-│       └── routes/        # TanStack Router sayfaları
-├── docs/images/           # README ekran görüntüleri
-├── .env.example           # Docker için model yolu şablonu
+│       ├── components/    # Upload, selection, and comparison components
+│       ├── hooks/         # Application state
+│       ├── lib/           # API client and download helpers
+│       └── routes/        # TanStack Router pages
+├── docs/images/           # README screenshots
+├── .env.example           # Model-path template for Docker
 └── docker-compose.yml
 ```
 
-## Hızlı başlangıç: Docker Compose
+## Quick start with Docker Compose
 
-### Gereksinimler
+### Requirements
 
-- Docker ve Docker Compose
-- Aşağıdaki harici model depoları ve ağırlık dosyaları
+- Docker and Docker Compose
+- The external model repositories and checkpoint files listed below
 
-Docker yapılandırması dört host yolunu zorunlu olarak bekler. Önce ortam dosyasını oluşturun:
+The Docker configuration requires four host paths. Create the environment file first:
 
 ```bash
 cp .env.example .env
 ```
 
-Ardından `.env` içindeki yolları kendi makinenize göre düzenleyin:
+Update the paths in `.env` for your machine:
 
-| Değişken                | Beklenen konum                                                         |
-| ----------------------- | ---------------------------------------------------------------------- |
-| `DEPTH_ANYTHING_REPO`   | Depth-Anything-V2 deposunun kök dizini                                 |
-| `FOG_MAKER_CHECKPOINTS` | `depth_anything_v2_vitl.pth` dosyasını içeren dizin                    |
-| `DEHAZEFORMER_REPO`     | `save_models/indoor/dehazeformer-w.pth` içeren DehazeFormer deposu     |
-| `MPRNET_REPO`           | `Deraining/pretrained_models/model_deraining.pth` içeren MPRNet deposu |
+| Variable                | Expected location                                                              |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `DEPTH_ANYTHING_REPO`   | Root directory of the Depth-Anything-V2 repository                             |
+| `FOG_MAKER_CHECKPOINTS` | Directory containing `depth_anything_v2_vitl.pth`                              |
+| `DEHAZEFORMER_REPO`     | DehazeFormer repository containing `save_models/indoor/dehazeformer-w.pth`     |
+| `MPRNET_REPO`           | MPRNet repository containing `Deraining/pretrained_models/model_deraining.pth` |
 
-Servisleri derleyip başlatın:
+Build and start the services:
 
 ```bash
 docker compose up --build
 ```
 
-- Arayüz: <http://localhost:3000>
+- Frontend: <http://localhost:3000>
 - Backend API: <http://localhost:8000>
-- OpenAPI arayüzü: <http://localhost:8000/docs>
-- Sağlık kontrolü: <http://localhost:8000/health>
+- OpenAPI documentation: <http://localhost:8000/docs>
+- Health check: <http://localhost:8000/health>
 
-Servisleri durdurmak için:
+Stop the services with:
 
 ```bash
 docker compose down
 ```
 
-## Yerel geliştirme
+## Local development
 
 ### Frontend
 
-Vite 7 için Node.js `20.19+` veya `22.12+` gerekir.
+Vite 7 requires Node.js `20.19+` or `22.12+`.
 
 ```bash
 cd frontend
@@ -156,18 +156,18 @@ npm ci
 npm run dev
 ```
 
-Frontend varsayılan olarak API isteklerini `http://localhost:8000` adresine gönderir. Farklı bir adres için geliştirme sunucusunu şu değişkenle başlatabilirsiniz:
+The frontend sends API requests to `http://localhost:8000` by default. To use another API address, set `VITE_API_URL` when starting the development server:
 
 ```bash
 VITE_API_URL=http://localhost:8000 npm run dev
 ```
 
 > [!NOTE]
-> `/api/process` erişilemezse frontend geliştirme kolaylığı için mevcut görseli gecikmeli bir mock sonuç olarak gösterir. Bu yalnızca arayüz akışını doğrular; gerçek bir model çıktısı değildir. Sentetik hava ve metrik özellikleri çalışan backend gerektirir.
+> If `/api/process` is unavailable, the frontend currently returns the uploaded image as a delayed mock result for interface development. This validates only the UI flow and is not a model-generated output. Synthetic weather and image-quality metrics require a running backend.
 
 ### Backend
 
-Python 3.12 ve `uv` gerekir. Docker dışında çalışırken harici model yollarını doğrudan backend değişkenleriyle verin:
+The backend requires Python 3.12 and `uv`. When running outside Docker, configure the external model locations with backend environment variables:
 
 ```bash
 cd backend
@@ -183,20 +183,20 @@ uv sync --frozen
 uv run fastapi dev app/main.py --host 0.0.0.0
 ```
 
-DehazeFormer ve MPRNet çıkarımında en uzun kenar varsayılan olarak 1024 piksele sınırlandırılır. Gerektiğinde `NETGOR_DEHAZEFORMER_MAX_SIDE` ve `NETGOR_MPRNET_MAX_SIDE` değişkenleriyle bu değerleri değiştirebilirsiniz. Cihaz seçimi CUDA, Apple MPS ve CPU sırasıyla otomatik yapılır.
+DehazeFormer and MPRNet limit the longest inference edge to 1024 pixels by default. Override this value with `NETGOR_DEHAZEFORMER_MAX_SIDE` or `NETGOR_MPRNET_MAX_SIDE` when needed. Model services automatically select CUDA, Apple MPS, or CPU based on availability.
 
-## API özeti
+## API overview
 
-| Yöntem | Uç                            | Açıklama                                                                    |
-| ------ | ----------------------------- | --------------------------------------------------------------------------- |
-| `GET`  | `/health`                     | Servis sağlık durumunu döndürür.                                            |
-| `GET`  | `/api/capabilities`           | Sentetik sis ve yağmur özelliklerinin kullanılabilirliğini bildirir.        |
-| `POST` | `/api/process`                | `image` ve `algorithm` alanlarını alıp iyileştirilmiş PNG döndürür.         |
-| `POST` | `/api/synthesize/weather`     | `image`, `effect` ve `intensity` alanlarıyla sentetik hava üretir.          |
-| `POST` | `/api/metrics/no-reference`   | `image` ve isteğe bağlı `include_fade` ile referanssız metrikleri hesaplar. |
-| `POST` | `/api/metrics/full-reference` | `reference` ve `output` görselleriyle MSE, PSNR ve SSIM hesaplar.           |
+| Method | Endpoint                      | Description                                                                              |
+| ------ | ----------------------------- | ---------------------------------------------------------------------------------------- |
+| `GET`  | `/health`                     | Returns the service health status.                                                       |
+| `GET`  | `/api/capabilities`           | Reports the availability of synthetic fog and rain features.                             |
+| `POST` | `/api/process`                | Accepts `image` and `algorithm` fields and returns a restored PNG.                       |
+| `POST` | `/api/synthesize/weather`     | Accepts `image`, `effect`, and `intensity` fields and returns a synthetic weather image. |
+| `POST` | `/api/metrics/no-reference`   | Calculates no-reference metrics from `image` and optional `include_fade` fields.         |
+| `POST` | `/api/metrics/full-reference` | Calculates MSE, PSNR, and SSIM from `reference` and `output` images.                     |
 
-`/api/process` için geçerli algoritma kimlikleri:
+Valid algorithm identifiers for `/api/process`:
 
 ```text
 fast-single-image-dehazing
@@ -205,16 +205,16 @@ ugsm
 mprnet
 ```
 
-## Test ve kalite kontrolleri
+## Tests and quality checks
 
-Backend testleri:
+Run the backend tests:
 
 ```bash
 cd backend
 uv run pytest
 ```
 
-Frontend testleri ve statik kontroller:
+Run the frontend tests and static checks:
 
 ```bash
 cd frontend
@@ -224,10 +224,10 @@ npm run format
 npm run build
 ```
 
-## Sorun giderme
+## Troubleshooting
 
-- `docker compose` bir değişkenin ayarlanmadığını söylüyorsa `.env` dosyasındaki dört model yolunun da dolu ve host üzerinde erişilebilir olduğundan emin olun.
-- Sentetik sis seçeneği kapalıysa `/api/capabilities` yanıtındaki `fog.reason` alanını ve Depth Anything V2 yollarını kontrol edin.
-- DehazeFormer veya MPRNet isteği `503` döndürüyorsa depo yapısının ve checkpoint dosyasının yukarıdaki yollarla eşleştiğini doğrulayın.
-- Frontend API'ye bağlanamıyorsa backend'in `8000`, frontend'in `3000` portunda çalıştığını ve `VITE_API_URL` değerini kontrol edin.
-- İlk model çağrısı, ağırlıkların belleğe yüklenmesi nedeniyle sonraki çağrılardan daha uzun sürebilir.
+- If `docker compose` reports a missing variable, verify that all four model paths in `.env` are set and accessible from the host.
+- If synthetic fog is disabled, inspect the `fog.reason` field returned by `/api/capabilities` and verify the Depth Anything V2 paths.
+- If DehazeFormer or MPRNet returns `503`, verify that the repository structure and checkpoint files match the paths documented above.
+- If the frontend cannot reach the API, confirm that the backend is running on port `8000`, the frontend is running on port `3000`, and `VITE_API_URL` is correct.
+- The first model request can take longer because model weights must be loaded into memory.
