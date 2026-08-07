@@ -24,6 +24,6 @@ describe('download helpers', () => {
       'image/png',
     )
 
-    expect(filename).toBe('sisli-sokak-hizli-tek-goruntu-sis-giderme-temiz.png')
+    expect(filename).toBe('sisli-sokak-fast-single-image-dehazing-temiz.png')
   })
 })

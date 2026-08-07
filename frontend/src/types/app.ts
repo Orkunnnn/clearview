@@ -78,7 +78,7 @@ export type ComparisonMode = 'slider' | 'zoom'
 export const ALGORITHMS: Algorithm[] = [
   {
     id: 'fast-single-image-dehazing',
-    name: 'Hızlı Tek Görüntü Sis Giderme',
+    name: 'Fast Single Image Dehazing',
     category: 'dehazing',
     methodType: 'classical',
     description: 'Hızlı tek görüntü sis giderme modeli',

@@ -6,7 +6,7 @@ The application brings classical image-processing techniques and deep-learning m
 
 ## Interface
 
-The screenshots below were captured as lossless 2560×1440 PNGs. They use a real 1600×1200 hazy PNG and the output produced by ClearView's own Fast Single Image Dehazing service.
+The screenshots below are high-resolution PNG captures of ClearView processing `image_4_beta_2.0.png` with Fast Single Image Dehazing.
 
 ### Result gallery
 
