@@ -12,13 +12,13 @@ The screenshots below are high-resolution PNG captures of ClearView processing `
 
 Processed images are grouped by algorithm and processing pipeline.
 
-![ClearView result gallery](docs/images/clearview-results.png)
+![ClearView result gallery](docs/images/clearview-results-fast-dehazing.png)
 
 ### Before-and-after comparison
 
 The slider view compares the original and processed images within the same frame. A magnifier mode is also available for closer inspection.
 
-![ClearView before-and-after comparison](docs/images/clearview-comparison.png)
+![ClearView before-and-after comparison](docs/images/clearview-comparison-fast-dehazing.png)
 
 ## Features
 
