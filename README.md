@@ -4,10 +4,6 @@ ClearView is a web-based image-processing application for restoring images degra
 
 The application brings classical image-processing techniques and deep-learning models into one interface. It can process multiple images with multiple algorithms, present the results through slider or magnifier comparisons, and evaluate image quality with both full-reference and no-reference metrics.
 
-## Interface
-
-The screenshots below are high-resolution PNG captures of ClearView processing `image_4_beta_2.0.png` with Fast Single Image Dehazing.
-
 ### Result gallery
 
 Processed images are grouped by algorithm and processing pipeline.
